@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Detail</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        /* General body styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f3f4f6, #e3e6ec);
+            color: #444;
+            padding: 20px 0;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #5a5f7d;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        label {
+            color: #555;
+            font-weight: 500;
+        }
+
+        .food-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .food-details {
+            padding-left: 20px;
+        }
+
+        .food-details h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .food-details p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 5px;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-back {
+            margin-top: 20px;
+            background-color: #d4d4d8;
+            color: #444;
+            font-weight: 500;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+        }
+
+        .btn-back:hover {
+            background-color: #c2c2c7;
+            color: #333;
+        }
+
+        /* Footer styles */
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            padding: 10px;
+            background-color: #5a5f7d;
+            color: #fff;
+            border-radius: 8px;
+        }
+
+        footer a {
+            color: #ffd700;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <!-- Food Image -->
+        <div class="col-md-6">
+            <img src="{{ food.image.url }}" class="img-fluid food-image" alt="{{ food.name }}">
+        </div>
+        <!-- Food Details -->
+        <div class="col-md-6 food-details">
+            <h2>Name : {{ food.name }}</h2>
+            <p>Description: {{ food.description }}</p>
+            <p>Stock :{{ food.stock}}</p>
+            <h4>Price: ${{ food.price }}</h4>
+
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">Delete</button>
+            </form>
+
+            <div class="mt-4 text-center">
+                <a href="{% url 'food_list' %}" class="btn btn-back">Back to Food List</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2024 <a href="#">Restaurant Management</a>. All Rights Reserved.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

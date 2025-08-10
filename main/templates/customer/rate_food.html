@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate {{ food.name }}</title>
+    <!-- Bootstrap CSS for styling -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin-top: 50px;
+        }
+        h1 {
+            color: #343a40;
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+        .card {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            background-color: #fff;
+        }
+        .form-group label {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #343a40;
+        }
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            padding: 10px;
+        }
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        .rating-container {
+            display: flex;
+            justify-content: space-between;
+            max-width: 250px;
+            margin: 0 auto;
+        }
+        .rating-container input {
+            width: 50px;
+            padding: 5px;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+        .rating-container input[type="number"] {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        .rating-container input[type="number"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            border-radius: 8px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Rate {{ food.name }}</h1>
+        
+        <div class="card shadow-lg p-4">
+            <form method="POST">
+                {% csrf_token %}
+                
+                <!-- Rating -->
+                <div class="form-group">
+                    <label for="rating">Your Rating (1-5)</label>
+                    <div class="rating-container">
+                        <input type="number" name="rating" id="rating" min="1" max="5" step="1" value="1" class="form-control">
+                    </div>
+                </div>
+                
+                <!-- Comment Box -->
+                <div class="form-group comment-box">
+                    <label for="comment">Your Comment</label>
+                    {{ form.comment }}
+                </div>
+
+                <button type="submit" class="btn btn-success btn-lg btn-block">Submit Rating</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js for Bootstrap functionality -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

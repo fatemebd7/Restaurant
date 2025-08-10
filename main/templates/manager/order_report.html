@@ -1,0 +1,35 @@
+<form method="get" class="mb-4">
+    <label for="start_date">Start Date:</label>
+    <input type="date" name="start_date" id="start_date" value="{{ start_date }}">
+    <label for="end_date">End Date:</label>
+    <input type="date" name="end_date" id="end_date" value="{{ end_date }}">
+    <button type="submit" class="btn btn-primary">Filter</button>
+  </form>
+  
+  <h3>Total Revenue: {{ total_revenue }}</h3>
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Customer</th>
+        <th>Total Price</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr>
+        <td>{{ order.id }}</td>
+        <td>{{ order.customer }}</td>
+        <td>{{ order.total_price }}</td>
+        <td>{{ order.created_at }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="4">No orders found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  

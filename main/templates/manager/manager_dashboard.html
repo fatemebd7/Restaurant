@@ -1,0 +1,174 @@
+{% extends 'base_generic.html' %} {% block content %}
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-3">
+      
+      <div class="cont">
+      <div class="list-group shadow-sm" style="border-radius: 8px">
+        <a
+          class="list-group-item list-group-item-action"
+          href="{% url 'profile' %}"
+        >
+          <i class="fas fa-user"></i> Profile
+        </a>
+
+        <a
+          href="{% url 'food_list' %}"
+          class="list-group-item list-group-item-action"
+        >
+          <i class="fas fa-utensils"></i> Food List
+        </a>
+        <a
+          href="{% url 'add_food' %}"
+          class="list-group-item list-group-item-action"
+        >
+          <i class="fas fa-plus-circle"></i> Add Food
+        </a>
+        <a
+          href="{% url 'add_employee' %}"
+          class="list-group-item list-group-item-action"
+        >
+          <i class="fas fa-user-plus"></i> Add Employee
+        </a>
+        <a
+          href="{% url 'employee_list' %}"
+          class="list-group-item list-group-item-action"
+        >
+          <i class="fas fa-users"></i> Employee List
+        </a>
+        <a
+          href="{% url 'order_list' %}"
+          class="list-group-item list-group-item-action"
+        >
+          <i class="fas fa-box"></i> View Orders
+        </a>
+        <a
+          href="{% url 'discount_list' %}"
+          class="list-group-item list-group-item-action"
+        >
+          <i class="fas fa-box"></i> View Discount
+        </a>
+        <a
+          href="{% url 'top_selling_foods' %}"
+          class="list-group-item list-group-item-action"
+        >
+          <i class="fas fa-box"></i> View Top Foods
+        </a>
+
+      </div>
+      </div>
+    </div>
+
+    <!-- ستون اصلی (محتویات اصلی داشبورد) -->
+    <div class="col-md-9">
+      <div class="card shadow-sm" style="border-radius: 8px">
+        <div class="card-body">
+          <h4 class="card-title">Welcome, {{ user.username }}</h4>
+          <p class="text-muted">
+            You can manage the restaurant's menu, employees, and orders using
+            the options on the left.
+          </p>
+
+          <div class="row">
+            <!-- کارت‌های اطلاعاتی -->
+            <div class="col-md-4">
+              <div class="card border-primary mb-3">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Food Items</h5>
+                  <p class="card-text">
+                    Manage the food items available on the menu.
+                  </p>
+                  <a href="{% url 'food_list' %}" class="btn btn-primary"
+                    >View Food List</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card border-warning mb-3">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Add New Employee</h5>
+                  <p class="card-text">
+                    Register a new employee to your system.
+                  </p>
+                  <a
+                    href="{% url 'add_employee' %}"
+                    class="btn btn-warning w-100"
+                    >Add New Employee</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card border-success mb-3">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Employees</h5>
+                  <p class="card-text">
+                    Add new employees and manage existing ones.
+                  </p>
+                  <a href="{% url 'employee_list' %}" class="btn btn-success"
+                    >Manage Employees</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-success mb-3">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Discount</h5>
+                  <p class="card-text">
+                    Add new Discounts and manage their status.
+                  </p>
+                  <a
+                    href="{% url 'discount_list' %}"
+                    class="list-group-item list-group-item-action"
+                  >
+                    <i class="fas fa-percent"></i> Manage Discounts
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- کارت پرفروش‌ترین غذاها -->
+            <div class="col-md-4">
+              <div class="card border-danger mb-3">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Top Selling Foods</h5>
+                  <p class="card-text">
+                    See the list of top-selling food items and their sales
+                    count.
+                  </p>
+                  <a href="{% url 'top_selling_foods' %}" class="btn btn-danger"
+                    >View Top Foods</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="card border-info mb-3">
+              <div class="card-body text-center">
+                <h5 class="card-title">Orders</h5>
+                <p class="card-text">
+                  View all customer orders and their status.
+                </p>
+                <a href="{% url 'order_list' %}" class="btn btn-info"
+                  >View Orders</a
+                >
+              </div>
+            </div>
+          </div>
+           <div class="logout-btn text-center mt-5">
+          <a href="{% url 'login' %}" class="btn btn-danger btn-lg">Logout</a>
+        </div>
+        </div>
+    
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

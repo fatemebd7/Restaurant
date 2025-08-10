@@ -1,0 +1,80 @@
+
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<h3 class="my-4 text-center">Top Selling Foods</h3>
+<div class="table-responsive">
+  <table class="table table-bordered table-hover">
+    <thead class="thead-custom">
+      <tr>
+        <th>Food</th>
+        <th>Total Sales</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for food in top_selling_foods %}
+      <tr>
+        <td>{{ food.food__name }}</td>
+        <td>{{ food.total_sales }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="2" class="text-center">No data available.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  /* جدول */
+  .table {
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* رنگ پس زمینه سرصفحه */
+  .thead-custom {
+    background-color: #007bff;
+    color: #ffffff;
+    font-weight: bold;
+  }
+
+  /* ردیف‌های جدول */
+  tr:nth-child(odd) {
+    background-color: #f9f9f9;
+  }
+
+  tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  /* سلول‌های جدول */
+  td, th {
+    padding: 15px;
+    text-align: center;
+  }
+
+  /* استایل برای سلول‌های خالی زمانی که داده‌ای وجود ندارد */
+  .text-center {
+    color: #777;
+    font-style: italic;
+  }
+
+  /* دکمه‌های جدول */
+  .btn {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+  }
+
+  .btn:hover {
+    background-color: #0056b3;
+  }
+</style>
+{% endblock %}

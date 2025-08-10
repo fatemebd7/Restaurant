@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Food List</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* سفارشی‌سازی استایل برای غذاها */
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .food-card {
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .food-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .food-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .food-card-body {
+            background: #fff;
+            padding: 15px;
+        }
+
+        .food-card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .food-card-price {
+            font-size: 1.2rem;
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+
+        .food-card button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .food-card button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .food-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .food-item {
+            width: 250px;
+            margin-bottom: 30px;
+        }
+
+        .food-item form {
+            margin-top: 10px;
+        }
+
+        /* استایل برای بخش غذاهای پیشنهادی */
+        .recommended-foods {
+            margin-top: 50px;
+            text-align: center;
+            padding: 30px 0;
+            background-color: #f0f8ff;
+            border-top: 2px solid #007bff;
+            animation: slideInUp 1s ease-out;
+        }
+
+        .recommended-foods h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .recommended-foods .row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .recommended-foods .col-md-4 {
+            margin: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .recommended-foods .col-md-4:hover {
+            transform: scale(1.05);
+        }
+
+        /* انیمیشن slideInUp */
+        @keyframes slideInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* کوچک‌کردن تصاویر در بخش پیشنهادی */
+        .recommended-foods img {
+            height: 150px;
+            width: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Food List</h1>
+<!-- فرم فیلتر دسته‌بندی و مرتب‌سازی -->
+<div class="mb-4">
+    <form method="GET" action="">
+        <div class="row">
+            <div class="col-md-6">
+                <select name="category" class="form-control" onchange="this.form.submit()">
+                    <option value="">All Categories</option>
+                    {% for key, value in categories.items %}
+                        <option value="{{ key }}" {% if request.GET.category == key %}selected{% endif %}>
+                            {{ value }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6">
+                <select name="sort_by" class="form-control" onchange="this.form.submit()">
+                    <option value="rating" {% if sort_by == 'rating' %}selected{% endif %}>Popularity</option>
+                    <option value="price_asc" {% if sort_by == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+                    <option value="price_desc" {% if sort_by == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+    <div class="food-list">
+        {% for food in foods %}
+        <div class="food-item">
+            <div class="food-card">
+                <a href="{% url 'customer_food_detail' food.id %}">
+                    <img src="{{ food.image.url }}" alt="{{ food.name }}">
+                </a>
+                <div class="food-card-body">
+                    <h5 class="food-card-title">{{ food.name }}</h5>
+                    <p class="food-card-price">{{ food.price }}$</p>
+
+                    <p class="card-text">
+                        <strong>Average Rating:</strong> {{ food.rating }} stars
+                        ({{ food.rating_count }} ratings)
+                    </p>
+                       <!-- زمان آماده‌سازی -->
+    <p class="card-text text-muted d-flex align-items-center">
+        <i class="fas fa-clock me-2"></i> {{ food.preparation_time }} minutes
+    </p>
+                    <a href="{% url 'rate_food' food.id %}" class="btn btn-primary">Rate this Food</a>
+
+
+
+
+                    {% if food.stock > 0 %}
+                    <form method="POST" action="{% url 'customer_add_to_cart' food.id %}">
+                        {% csrf_token %}
+                        <input type="number" name="quantity" value="1" min="0" class="form-control mb-3">
+                        <button type="submit">Add to Cart</button>
+                    </form>
+                    {% else %}
+                    <button class="btn btn-secondary w-100" disabled>Out of Stock</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- بخش غذاهای پیشنهادی -->
+    <div class="recommended-foods">
+        <h3>Recommended for You</h3>
+        <div class="row">
+            {% for food in recommended_foods %}
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <img src="{{ food.image.url }}" class="card-img-top" alt="{{ food.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ food.name }}</h5>
+                            <p class="card-text">{{ food.description }}</p>
+                            <p class="card-text"><strong>Price:</strong> ${{ food.price }}</p>
+                            <p class="card-text"><strong>Rating:</strong> {{ food.rating }} / 5</p>
+                            <a href="{% url 'customer_food_detail' food.id %}" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No recommendations available.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

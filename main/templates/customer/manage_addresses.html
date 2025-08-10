@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Addresses</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 80%;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 24px;
+      color: #333;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    li:hover {
+      background-color: #f1f1f1;
+    }
+
+    strong {
+      font-size: 16px;
+      color: #333;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      font-size: 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333;
+    }
+
+    .btn-success {
+      background-color: #28a745;
+      color: white;
+      border: none;
+    }
+
+    .btn-success:hover {
+      background-color: #218838;
+    }
+
+    .btn-back {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      text-decoration: none;
+      margin-bottom: 20px;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+
+    .btn-back:hover {
+      background-color: #0056b3;
+    }
+
+    /* For better responsiveness */
+    @media (max-width: 768px) {
+      .container {
+        width: 90%;
+      }
+
+      .btn {
+        font-size: 12px;
+        padding: 6px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <a href="{% url 'customer_dashboard' %}" class="btn-back">Back to Dashboard</a>
+    <h1>Your Addresses</h1>
+
+    <ul>
+      {% for address in addresses %}
+      <li>
+        <div>
+          <strong>{{ address.title }}</strong> - {{ address.address }}
+        </div>
+        <div class="btn-group">
+          <form method="post" style="display: inline;">
+            {% csrf_token %}
+            <button name="delete" value="{{ address.id }}" class="btn btn-danger btn-sm">Delete</button>
+          </form>
+          <form method="post" style="display: inline;">
+            {% csrf_token %}
+            <button name="set_default" value="{{ address.id }}" class="btn btn-success btn-sm">Set as Default</button>
+          </form>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+</body>
+</html>

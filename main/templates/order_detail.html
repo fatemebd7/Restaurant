@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* General body styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f3f4f6, #e3e6ec);
+            color: #444;
+            padding-top: 30px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #5a5f7d;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #5a5f7d;
+        }
+
+        .card-text {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .btn-primary {
+            background-color: #5a5f7d;
+            border-color: #5a5f7d;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+
+        .btn-primary:hover {
+            background-color: #4c5170;
+            border-color: #4c5170;
+        }
+
+        .btn-secondary {
+            background-color: #d4d4d8;
+            border-color: #d4d4d8;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #c2c2c7;
+            border-color: #c2c2c7;
+        }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            padding: 10px;
+            background-color: #5a5f7d;
+            color: #fff;
+            border-radius: 8px;
+        }
+
+        footer a {
+            color: #ffd700;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Order Details Container -->
+    <div class="container mt-5">
+        <h2>Order Details</h2>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Order ID: {{ order.id }}</h5>
+                <p class="card-text"><strong>Customer:</strong> {{ order.customer.username }}</p>
+                <p class="card-text"><strong>Total Price:</strong> ${{ order.total_price }}</p>
+                <p class="card-text"><strong>Status:</strong> 
+                    <span class="{% if order.status == 'completed' %}text-danger{% elif order.status == 'pending' %}text-success{% elif order.status == 'cancelled' %}text-warning{% endif %}">
+                        {{ order.status|title }}
+                    </span>
+                </p>
+                <p class="card-text"><strong>Address:</strong> {{ order.address }}</p>
+                <p class="card-text"><strong>Order Date:</strong> {{ order.order_date }}</p>
+            </div>
+        </div>
+
+        <!-- Items List -->
+        <h3 class="mt-5">Order Items</h3>
+        <div class="list-group">
+            {% for item in paginated_items %}
+                <div class="list-group-item">
+                    <p><strong>Item Name:</strong> {{ item.food.name }}</p>
+                    <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+                </div>
+            {% empty %}
+                <p>No items in this order.</p>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-4">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    {% if paginated_items.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1" aria-label="First">
+                                <span aria-hidden="true">&laquo;&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ paginated_items.previous_page_number }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Page {{ paginated_items.number }} of {{ paginated_items.paginator.num_pages }}</span>
+                    </li>
+                    {% if paginated_items.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ paginated_items.next_page_number }}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ paginated_items.paginator.num_pages }}" aria-label="Last">
+                                <span aria-hidden="true">&raquo;&raquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        
+        <!-- Back Button -->
+        <div class="mt-4 text-center">
+            <a href="{% url 'order_list' %}" class="btn btn-secondary">Back to Orders</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 <a href="#">Restaurant Management</a>. All Rights Reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

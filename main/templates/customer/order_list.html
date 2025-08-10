@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Orders</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #f4f6f9;
+        font-family: Arial, sans-serif;
+      }
+
+      .container {
+        margin-top: 50px;
+      }
+
+      .order-item {
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+      }
+
+      .order-item h4 {
+        color: #007bff;
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 15px;
+      }
+
+      .order-item .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .order-item .col-md-6 {
+        font-size: 16px;
+        color: #555;
+      }
+
+      .order-item .col-md-6 span {
+        font-weight: bold;
+      }
+
+      .order-item ul {
+        list-style-type: none;
+        padding-left: 0;
+      }
+
+      .order-item ul li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-bottom: 1px solid #f1f1f1;
+      }
+
+      .order-item ul li strong {
+        color: #333;
+      }
+
+      .order-item .total-price {
+        font-size: 18px;
+        font-weight: bold;
+        color: #007bff;
+        margin-top: 20px;
+      }
+
+      /* Style for Cancel button */
+      .btn-danger {
+        background-color: #dc3545;
+        color: white;
+        border-radius: 5px;
+        padding: 8px 20px;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-transform: uppercase;
+        font-weight: bold;
+        margin-bottom: 30px;
+        margin-top: 30px;
+      }
+      .btn-detail {
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+        padding: 10px 25px;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-transform: uppercase;
+        font-weight: bold;
+        margin-top: 10px;
+        
+      }
+
+      .btn-danger:hover {
+        background-color: #c82333;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+      .btn-detail:hover {
+        background-color: #007bff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn-danger:disabled {
+        background-color: #e5e5e5;
+        color: #aaa;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      .empty-message {
+        text-align: center;
+        font-size: 18px;
+        color: #666;
+      }
+
+      .btn-back {
+        background-color: #28a745;
+        color: white;
+        border-radius: 5px;
+        padding: 10px 20px;
+        text-decoration: none;
+        display: inline-block;
+        margin-bottom: 30px;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn-back:hover {
+        background-color: #218838;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Your Orders</h1>
+
+      {% if orders %}
+      <div class="row">
+        {% for order in orders %}
+        <div class="col-md-12">
+          <div class="order-item">
+            <!-- Order ID and Status -->
+            <div class="row">
+              <div class="col-md-6">
+                <span>Order {{ order.id }}</span>
+              </div>
+              <div class="col-md-6 text-right">
+                <span class="badge badge-info">{{ order.status }}</span>
+              </div>
+            </div>
+
+            <!-- Items in the order -->
+            <ul>
+              {% for item in order.items.all %}
+              <li>
+                <div>
+                  <strong>{{ item.food.name }}</strong>
+                </div>
+              </li>
+              {% endfor %}
+            </ul>
+
+            <!-- Total Price -->
+            <div class="total-price">
+              <span>Total Price: {{ order.total_price }}$</span>
+            </div>
+
+            <!-- Cancel Order Button -->
+            <form method="POST" action="{% url 'cancel_order' order.id %}">
+              {% csrf_token %}
+              <button
+                type="submit"
+                class="btn btn-danger btn-sm"
+                {% if not order.is_cancellable %}
+                  disabled
+                {% endif %}
+              >
+                Cancel Order
+              </button>
+            </form>
+
+            <!-- View Order Details Button -->
+            <a href="{% url 'customer_order_detail' order.id %}" class="btn-detail"
+              >View Details</a
+            >
+          </div>
+        </div>
+        {% endfor %}
+        <!-- Back Button -->
+        <a href="{% url 'customer_dashboard' %}" class="btn-back"
+          >Back to Orders</a
+        >
+      </div>
+      {% else %}
+      <p class="empty-message">You have no orders yet.</p>
+      {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

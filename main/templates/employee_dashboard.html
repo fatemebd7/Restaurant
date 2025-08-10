@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee Dashboard</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* Custom Styles */
+      body {
+        font-family: "Arial", sans-serif;
+        background: linear-gradient(to bottom, #fff, #f8e2d1);
+        padding-top: 70px;
+      }
+
+      /* Navbar */
+      .navbar {
+        background-color: #4a90e2;
+        padding: 15px 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .navbar-brand {
+        color: white !important;
+        font-weight: bold;
+        font-size: 1.5rem;
+      }
+
+      .nav-link {
+        color: white !important;
+        font-size: 1rem;
+        font-weight: 500;
+      }
+
+      .nav-link:hover {
+        color: #ffd1c1 !important;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        background-color: #4a90e2;
+        color: white;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 250px;
+        padding-top: 70px;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .sidebar a {
+        color: white;
+        display: block;
+        padding: 15px 20px;
+        text-decoration: none;
+        font-size: 1.1rem;
+        font-weight: 500;
+      }
+
+      .sidebar a:hover {
+        background-color: #0F2154;
+        color: #fff;
+      }
+
+      .content {
+        margin-left: 260px;
+        padding: 20px;
+      }
+
+      /* Dashboard Header */
+      .dashboard-header {
+        text-align: center;
+        margin-bottom: 40px;
+        color: #4a90e2;
+      }
+
+      .dashboard-header h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #0F2154;
+      }
+
+      .dashboard-header p {
+        font-size: 1.1rem;
+        color: #0F2154;
+        margin-bottom: 30px;
+      }
+
+      /* Cards */
+      .card {
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        border: none;
+        background-color: #fff;
+      }
+
+      .card-body {
+        padding: 20px;
+      }
+
+      .card-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #4a90e2;
+      }
+
+      .card-text {
+        font-size: 1rem;
+        color: #0F2154;
+      }
+
+      /* Buttons */
+      .btn-primary {
+        background-color: #4a90e2;
+        border-color: #4a90e2;
+        border-radius: 8px;
+        font-weight: bold;
+      }
+
+      .btn-primary:hover {
+        background-color: #0F2154;
+        border-color: #0F2154;
+      }
+
+   
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .sidebar {
+          width: 200px;
+        }
+
+        .content {
+          margin-left: 210px;
+        }
+
+        .container {
+          padding-left: 15px;
+          padding-right: 15px;
+        }
+
+        .card-body {
+          padding: 15px;
+        }
+      }
+      footer {
+        background-color: #4a90e2;
+        color: white;
+        padding: 20px 0;
+        margin-top: 50px;
+      }
+
+      footer h5 {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+        margin-left: 250px;
+      }
+
+      footer a {
+        color: #ffd1c1;
+        text-decoration: none;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+        color: #0F2154;
+      }
+
+      footer ul {
+        list-style: none;
+        padding: 0;
+        margin-left: 250px;
+
+      }
+
+      footer ul li {
+        margin-bottom: 10px;
+      }
+
+      footer hr {
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+      footer p{
+        margin-left: 250px;
+
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'employee_dashboard' %}"
+          >Employee Dashboard</a
+        >
+      </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <a href="{% url 'order_pending_list' %}">Pending Orders</a>
+      <a href="{% url 'order_completed_list' %}">Completed Orders</a>
+      <a href="{% url 'profile' %}">Profile</a>
+      <a href="{% url 'login' %}">Logout</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+      <div class="dashboard-header">
+        <h2>Welcome {{ user.username }}!</h2>
+        <p>This is your personal dashboard where you can manage your tasks.</p>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Pending Orders</h5><br>
+              <p class="card-text">View and manage pending orders.</p>
+              <br>
+              <br>
+              <a
+                href="{% url 'order_pending_list' %}"
+                class="btn btn-primary w-100"
+                >View Pending Orders</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Completed Orders</h5><br>
+              <p class="card-text">View completed orders.</p><br><br>
+              <a
+                href="{% url 'order_completed_list' %}"
+                class="btn btn-primary w-100"
+                >View Completed Orders</a
+              >
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Profile</h5><br>
+              <p class="card-text">Update your profile information.</p><br> <br>
+              <a href="{% url 'profile' %}" class="btn btn-primary w-100"
+                >Go to Profile</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer mt-auto py-5">
+      <div class="container">
+        <div class="row text-center text-md-start">
+          <!-- About Section -->
+          <div class="col-md-4 mb-4">
+            <h5 class="text-uppercase text-light">About Us</h5>
+            <p class="text-light">
+              We are dedicated to providing the best services for managing
+              employee tasks efficiently.
+            </p>
+          </div>
+
+          <!-- Contact Section -->
+          <div class="col-md-4 mb-4">
+            <h5 class="text-uppercase text-light">Contact Us</h5>
+            <ul class="list-unstyled">
+              <li><i class="bi bi-telephone-fill"></i> +98 9160417160</li>
+              <li><i class="bi bi-envelope-fill"></i> fateme.bd7@gmail.com</li>
+              <li>
+                <i class="bi bi-geo-alt-fill"></i> uni chamran, ahvaz, iran
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

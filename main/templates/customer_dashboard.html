@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Customer Dashboard</title>
+
+    <!-- Link to Bootstrap CSS (for responsive design) -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome for icons -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* General Body Styling */
+      body {
+        background-color: #f3f4f7;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Header */
+      .header {
+        background-color: #ffffff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header img {
+        max-width: 150px;
+      }
+
+      .header .user-info {
+        font-size: 16px;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        background-color: #4a90e2;
+        color: #ffffff;
+        height: 100vh;
+        width: 250px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding: 20px 10px;
+        box-shadow: 4px 0 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .sidebar a {
+        color: #ffffff;
+        text-decoration: none;
+        padding: 10px;
+        display: block;
+        margin: 10px 0;
+        font-size: 18px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      .sidebar a:hover {
+        background-color: #2d60a5;
+      }
+
+      /* Main Content */
+      .content-wrapper {
+        margin-left: 250px;
+        padding: 30px;
+        background-color: #fff;
+      }
+
+      .card {
+        border-radius: 15px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        background-color: #ffffff;
+      }
+
+      .card-header {
+        background-color: #4a90e2;
+        color: #ffffff;
+        font-size: 20px;
+        padding: 15px;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+      }
+
+      .card-body {
+        padding: 20px;
+        font-size: 16px;
+      }
+
+      /* Food Item Card Styling */
+      .food-list-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .food-list-item img {
+        width: 80px;
+        height: 80px;
+        border-radius: 10px;
+        object-fit: cover;
+        margin-right: 20px;
+      }
+
+      .food-list-item span {
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      .btn-primary {
+        background-color: #4a90e2;
+        color: white;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn-primary:hover {
+        background-color: #357ab7;
+      }
+
+      /* Footer */
+      .footer {
+        background-color: #4a90e2;
+        color: white;
+        text-align: center;
+        padding: 15px 0;
+        margin-top: 50px;
+      }
+
+      .footer a {
+        color: white;
+        text-decoration: none;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .sidebar {
+          position: static;
+          width: 100%;
+          padding: 15px;
+        }
+
+        .content-wrapper {
+          margin-left: 0;
+        }
+
+        .header {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header with Logo -->
+    <div class="header">
+      <img src="logo.png" alt="Company Logo" />
+      <div class="user-info">
+        <span>Welcome, {{ user.username }}!</span>
+        <br />
+        <a href="{% url 'profile' %}" class="btn btn-info">Profile</a>
+        <a href="{% url 'login' %}" class="btn btn-logout">Log Out</a>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <a href="{% url 'customer_dashboard' %}"><i class="fas fa-home"></i> Dashboard</a>
+      <a href="{% url 'customer_food_list' %}"><i class="fas fa-utensils"></i> Food List</a>
+      <a href="{% url 'customer_cart_detail' %}"><i class="fas fa-cart-plus"></i> Cart</a>
+      <a href="{% url 'customer_checkout' %}"><i class="fas fa-check-circle"></i> Checkout</a>
+      <a href="{% url 'customer_order_list' %}"><i class="fas fa-box"></i> Orders</a>
+      <a href="{% url 'manage_addresses' %}"><i class="fas fa-address-book"></i> Addresses</a>
+      <a href="{% url 'customer_add_address' %}"><i class="fas fa-plus"></i> Add Address</a>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="content-wrapper">
+      <div class="container-fluid">
+        <!-- Cart and Orders Section -->
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-header">Your Cart</div>
+              <div class="card-body">
+                {% if cart_items %}
+                <ul>
+                  {% for cart_item in cart_items %}
+                  <li>
+                    <div class="food-list-item">
+                      <img src="{{ cart_item.food.image.url }}" alt="{{ cart_item.food.name }}" />
+                      <span>{{ cart_item.food.name }} ({{ cart_item.quantity }}x) = {{ cart_item.total_price }}</span>
+                    </div>
+                  </li>
+                  {% endfor %}
+                </ul>
+                <p><strong>Total: </strong>{{ total_price }}</p>
+                <a href="{% url 'customer_checkout' %}" class="btn btn-primary">Proceed to Checkout</a>
+                {% else %}
+                <p>Your cart is empty.</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-header">Your Orders</div>
+              <div class="card-body">
+                {% if orders %}
+                <ul>
+                  {% for order in orders %}
+                  <li>
+                    Order #{{ order.id }} - Status: {{ order.status }} <br />
+                    <strong>Total Price: </strong>{{ order.total_price }}<br />
+                    <a href="{% url 'customer_order_detail' order.id %}" class="btn btn-secondary btn-sm">View Order Details</a>
+                  </li>
+                  {% endfor %}
+                </ul>
+                {% else %}
+                <p>You have no orders yet.</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>&copy; 2025 Your Company. All Rights Reserved.</p>
+      <p><a href="#">Terms & Conditions</a> | <a href="#">Privacy Policy</a></p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
